@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="95px" height="95px" viewBox="0 0 95 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>Camera Oval</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Main-Diary-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Twenty-Four-1" transform="translate(-29.000000, -203.000000)">
+            <g id="Camera-Oval" transform="translate(29.000000, 203.000000)">
+                <path d="M47.5,95 C73.7335269,95 95,73.7335269 95,47.5 C95,21.2664731 73.7335269,0 47.5,0 C21.2664731,0 0,21.2664731 0,47.5 C0,73.7335269 21.2664731,95 47.5,95 Z" id="Oval-6" fill="#E3E2E3" opacity="0.321377841"></path>
+                <g id="icn_picture@2x.png" transform="translate(33.000000, 33.000000)" fill="#B6B6B6">
+                    <path d="M28.125,0 L1.875,0 C0.841875,0 0,0.838125 0,1.875 L0,28.125 C0,29.16 0.841875,30 1.875,30 L28.125,30 C29.161875,30 30,29.16 30,28.125 L30,1.875 C30,0.838125 29.161875,0 28.125,0 L28.125,0 Z M3.75,3.75 L26.25,3.75 L26.25,22.5 L3.75,22.5 L3.75,3.75 Z" id="Fill-1"></path>
+                    <polyline id="Fill-2" points="24.375 20.625 19.6875 13.125 17.94 15.9225 13.125 7.5 5.625 20.625 24.375 20.625"></polyline>
+                    <path d="M21.5625,10.78125 C22.854375,10.78125 23.90625,9.733125 23.90625,8.4375 C23.90625,7.141875 22.854375,6.09375 21.5625,6.09375 C20.270625,6.09375 19.21875,7.141875 19.21875,8.4375 C19.21875,9.733125 20.270625,10.78125 21.5625,10.78125" id="Fill-3"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

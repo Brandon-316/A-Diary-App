@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>icn_happy@2x.png</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Main-Diary-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Twenty-Four-1" transform="translate(-83.000000, -420.000000)">
+            <g id="icn_happy@2x.png" transform="translate(83.000000, 420.000000)">
+                <circle id="Oval-13" fill="#FFFFFF" cx="25" cy="25" r="25"></circle>
+                <path d="M25.025,5 C13.97,5 5,13.9525 5,25 C5,36.045 13.97,45 25.025,45 C36.085,45 45,36.045 45,25 C45,13.9525 36.085,5 25.025,5 L25.025,5 Z M17.5,17.5 C18.8875,17.5 20.005,18.62 20.005,20 C20.005,21.3825 18.8875,22.5 17.5,22.5 C16.1175,22.5 15,21.3825 15,20 C15,18.62 16.1175,17.5 17.5,17.5 L17.5,17.5 Z M32.5,17.5 C33.8875,17.5 35.005,18.62 35.005,20 C35.005,21.3825 33.8875,22.5 32.5,22.5 C31.1175,22.5 30,21.3825 30,20 C30,18.62 31.1175,17.5 32.5,17.5 L32.5,17.5 Z M24.99,37.5 C19.2275,37.5 12.5,32.5 12.5,27.5 L37.5,27.5 C37.5,32.5 30.82,37.5 24.99,37.5 L24.99,37.5 Z" id="Page-1" fill="#7E9B5E"></path>
+            </g>
+        </g>
+    </g>
+</svg>
