@@ -15,7 +15,6 @@ class DetailViewController: UIViewController {
     var date: Date?
     var entry: Entry?
     var currentMood: Moods?
-    var location: String?
     
     var managedObjectContext: NSManagedObjectContext!
     
@@ -55,18 +54,18 @@ class DetailViewController: UIViewController {
         NotificationCenter.default.addObserver(forName: NSNotifications().dateSaved, object: nil, queue: OperationQueue.main) { (notification) in
             let date = notification.object as! Date
             self.date = date
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-//            self.dateLabel.text = dateFormatter.string(from: date)
-            
-            self.entry?.date = date as NSDate
-            self.dateLabel.text = self.entry?.dateStringWithoutYear
-            
+            self.dateLabel.text = date.cellDateString
+        }
+        
+        NotificationCenter.default.addObserver(forName: NSNotifications().locationSaved, object: nil, queue: OperationQueue.main) { (notification) in
+            let location = notification.object as! String
+            self.locationLabel.text = location
         }
     }
     
-
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
     
     //MARK: Methods
@@ -81,13 +80,6 @@ class DetailViewController: UIViewController {
     }
     
     func configureView() {
-        // Update the user interface for the detail item.
-        if let detail = detailItem {
-            if let label = detailDescriptionLabel {
-                //               label.text = detail.timestamp!.description
-            }
-        }
-        
         entryImage.layer.cornerRadius = entryImage.frame.height / 2
         entryImage.clipsToBounds = true
     }
@@ -122,7 +114,7 @@ class DetailViewController: UIViewController {
             image = entryImage.image
         }
         
-        let _ = Entry.with(text: entryText.text, date: date, image: image, mood: currentMood, location: location, in: managedObjectContext)
+        let _ = Entry.with(text: entryText.text, date: date, image: image, mood: currentMood, location: locationLabel.text, in: managedObjectContext)
         managedObjectContext.saveChanges()
         
         navigationController?.navigationController?.popToRootViewController(animated: true)

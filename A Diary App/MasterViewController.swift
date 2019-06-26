@@ -11,6 +11,7 @@ import CoreData
 
 class MasterViewController: UITableViewController/*, NSFetchedResultsControllerDelegate*/ {
 
+    //MARK: Properties
     var detailViewController: DetailViewController? = nil
 //    var managedObjectContext: NSManagedObjectContext? = nil
     
@@ -21,6 +22,7 @@ class MasterViewController: UITableViewController/*, NSFetchedResultsControllerD
     }()
 
 
+    //MARK: Override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,16 +32,17 @@ class MasterViewController: UITableViewController/*, NSFetchedResultsControllerD
         }
         
         self.tableView.dataSource = dataSource
+        self.tableView.delegate = dataSource
+        
+        let date = Date()
+        self.title = date.navBarDateString
     }
 
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
     }
-
-
-    // MARK: - Segues
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
 //            if let indexPath = tableView.indexPathForSelectedRow {
@@ -49,10 +52,7 @@ class MasterViewController: UITableViewController/*, NSFetchedResultsControllerD
                 let addTaskController = navigationController.topViewController as! DetailViewController
                 
                 addTaskController.managedObjectContext = self.managedObjectContext
-                
-//                controller.detailItem = object
-//                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-//                controller.navigationItem.leftItemsSupplementBackButton = true
+            
 //            }
             
             let backItem = UIBarButtonItem()
@@ -62,10 +62,13 @@ class MasterViewController: UITableViewController/*, NSFetchedResultsControllerD
     }
 
 
+    //MARK: Methods
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
     
+    
+    //MARK: Actions
     @IBAction func createEntry(_ sender: Any) {
         self.performSegue(withIdentifier: "showDetail", sender: nil)
     }

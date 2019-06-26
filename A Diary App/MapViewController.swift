@@ -27,6 +27,7 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveTapped))
         checkLocationServices()
     }
     
@@ -87,6 +88,12 @@ class MapViewController: UIViewController {
         let longitude = mapView.centerCoordinate.longitude
         
         return CLLocation(latitude: latitude, longitude: longitude)
+    }
+    
+    @objc func saveTapped() {
+        guard let location = addressLabel.text else { return }
+        NotificationCenter.default.post(name: NSNotifications().locationSaved, object: location)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

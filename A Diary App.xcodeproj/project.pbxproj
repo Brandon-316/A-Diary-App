@@ -131,9 +131,10 @@
 				840D758621DF1B61007E7ECF /* AppDelegate.swift */,
 				840D75B921DFC913007E7ECF /* Extensions.swift */,
 				840D758B21DF1B61007E7ECF /* MasterViewController.swift */,
+				845638FF22000C0E00D538F3 /* DataSource.swift */,
 				840D758D21DF1B61007E7ECF /* DetailViewController.swift */,
-				8439B8BD220E5C54007D2064 /* MapViewController.swift */,
 				84563907220262FA00D538F3 /* DatePopUp.swift */,
+				8439B8BD220E5C54007D2064 /* MapViewController.swift */,
 				84563909220278E500D538F3 /* PhotoPickerManager.swift */,
 				8456390B22027A9400D538F3 /* PopUpImagePicker.swift */,
 				8456390622013DC000D538F3 /* TableviewCells */,
@@ -143,7 +144,6 @@
 				840D759721DF1B62007E7ECF /* Info.plist */,
 				840D758821DF1B61007E7ECF /* A_Diary_App.xcdatamodeld */,
 				84C81BBC21FBD4D100D2CD31 /* CoreDataStack.swift */,
-				845638FF22000C0E00D538F3 /* DataSource.swift */,
 				8456390122000C5400D538F3 /* DiaryFetchedResultsController.swift */,
 				8439B8B9220BEE7B007D2064 /* Moods.swift */,
 				8439B8BB220D22ED007D2064 /* NSNotifications.swift */,
@@ -246,13 +246,16 @@
 				TargetAttributes = {
 					840D758221DF1B61007E7ECF = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					840D759B21DF1B62007E7ECF = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 840D758221DF1B61007E7ECF;
 					};
 					840D75A621DF1B62007E7ECF = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 840D758221DF1B61007E7ECF;
 					};
 				};
@@ -509,7 +512,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "brandonmahoney.tech.A-Diary-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -527,7 +530,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "brandonmahoney.tech.A-Diary-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -547,7 +550,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "brandonmahoney.tech.A-Diary-AppTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/A Diary App.app/A Diary App";
 			};
@@ -568,7 +571,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "brandonmahoney.tech.A-Diary-AppTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/A Diary App.app/A Diary App";
 			};
@@ -588,7 +591,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "brandonmahoney.tech.A-Diary-AppUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "A Diary App";
 			};
@@ -608,7 +611,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "brandonmahoney.tech.A-Diary-AppUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "A Diary App";
 			};

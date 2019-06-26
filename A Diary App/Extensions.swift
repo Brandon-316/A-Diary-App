@@ -131,3 +131,53 @@ extension UIButton {
         }
     }
 }
+
+
+extension Date {
+    var navBarDateString: String {
+        return getDateString(withYear: true)
+    }
+    
+    var cellDateString: String {
+        return getDateString(withYear: false)
+    }
+    
+    var headerViewDateString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        
+        return formatter.string(from: self)
+    }
+    
+    
+    func getDateString(withYear isYear: Bool) -> String {
+        let formatter = DateFormatter()
+        let calendar = Calendar.current
+        let anchorComponents = calendar.dateComponents([.day, .year], from: self)
+        
+        formatter.dateFormat = "EEEE"
+        let day = formatter.string(from: self)
+        
+        formatter.dateFormat = "MMMM"
+        let month = formatter.string(from: self)
+        
+        var dayNum  = "\(anchorComponents.day!)"
+        switch (dayNum) {
+        case "1" , "21" , "31":
+            dayNum.append("st")
+        case "2" , "22":
+            dayNum.append("nd")
+        case "3" ,"23":
+            dayNum.append("rd")
+        default:
+            dayNum.append("th")
+        }
+        
+        if isYear {
+            let year = "\(anchorComponents.year!)"
+            return "\(month) \(dayNum), \(year)"
+        } else {
+            return "\(day) \(dayNum) \(month)"
+        }
+    }
+}

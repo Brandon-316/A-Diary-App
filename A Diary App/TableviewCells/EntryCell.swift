@@ -11,7 +11,6 @@ import UIKit
 class EntryCell: UITableViewCell {
     
     //MARK: Properties
-    var locationStackConstraints: [NSLayoutConstraint] = []
     
     //MARK: Outlets
     @IBOutlet weak var entryImage: UIImageView!
@@ -28,7 +27,7 @@ class EntryCell: UITableViewCell {
         handleLocationStack(with: entry.location)
         handleMoodIcon(with: entry.mood)
         
-        self.dateLabel.text = entry.dateStringWithoutYear
+        self.dateLabel.text = entry.entryDate.cellDateString
         self.entryLabel.text = entry.text
         self.entryImage.image = entry.image ?? UIImage(named: "NoImageIcon")
     }
@@ -39,43 +38,17 @@ class EntryCell: UITableViewCell {
     }
     
     func handleLocationStack(with location: String?) {
-        //Make sure constraints are up to date
-        locationStack.updateConstraints()
-        
-        //Check that locationStackConstraints are set
-        if locationStackConstraints.isEmpty && !locationStack.constraints.isEmpty {
-            print("Saved constraints")
-            locationStackConstraints = locationStack.constraints
-        }
-        
         if location != nil {
-            // Location is not nil
-            // Check if locationStack constraints are not set then set label text
-            print("Location wasn't nil")
+            // Location is not nil so check if location stack exists inside superView and add if not
             if locationStack == nil {
                 self.addSubview(locationStack)
             }
-//            if locationStack.constraints.isEmpty {
-//                locationStack.addConstraints(constraints)
-//                locationStack.isHidden = false
-//            }
             self.locationLabel.text = location
         } else {
-            // Location is nil
-            // Check if locationStack constraints are set
-            print("Location is nil")
-            
+            // Location is nil so if locationStack exists then remove it
             if locationStack != nil {
                 locationStack.removeFromSuperview()
             }
-            
-//            if !locationStack.constraints.isEmpty {
-//                print("Location constraints are not empty")
-//                locationStack.removeConstraints(locationStackConstraints)
-////                locationStack.addConstraint(locationStackHeight)
-//                locationStack.isHidden = true
-//                self.layoutIfNeeded()
-//            }
         }
     }
     

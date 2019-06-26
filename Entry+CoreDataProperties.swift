@@ -26,6 +26,7 @@ extension Entry {
     }
 
     @NSManaged public var date: NSDate
+    @NSManaged public var monthYear: String
     @NSManaged public var imageData: NSData?
     @NSManaged public var location: String?
     @NSManaged public var mood: String?
@@ -45,6 +46,10 @@ extension Entry {
         
         entry.text = text
         entry.date = date as NSDate
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        entry.monthYear = formatter.string(from: entry.date as Date)
         
         if let image = image {
             entry.imageData = image.jpegData(compressionQuality: 1.0)! as NSData
@@ -77,52 +82,16 @@ extension Entry {
 }
 
 extension Entry {
-    var dateStringWithYear: String {
-        return getDateString(withYear: true)
+    
+    var entryDate: Date {
+        return self.date as Date
     }
     
-    var dateStringWithoutYear: String {
-        return getDateString(withYear: false)
-    }
+//    var monthYear: String? {
+//        let yearFormatter = DateFormatter()
+//        yearFormatter.dateFormat = "MMMM yyyy"
+//
+//        return yearFormatter.string(from: self.entryDate)
+//    }
     
-    var dateHeaderString: String {
-        let date = self.date as Date
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy"
-        
-        return formatter.string(from: date)
-    }
-    
-    
-    func getDateString(withYear isYear: Bool) -> String {
-        let date = self.date as Date
-        let formatter = DateFormatter()
-        let calendar = Calendar.current
-        let anchorComponents = calendar.dateComponents([.day, .year], from: date)
-        
-        formatter.dateFormat = "EEEE"
-        let day = formatter.string(from: date as Date)
-        
-        formatter.dateFormat = "MMMM"
-        let month = formatter.string(from: date as Date)
-        
-        var dayNum  = "\(anchorComponents.day!)"
-        switch (dayNum) {
-        case "1" , "21" , "31":
-            dayNum.append("st")
-        case "2" , "22":
-            dayNum.append("nd")
-        case "3" ,"23":
-            dayNum.append("rd")
-        default:
-            dayNum.append("th")
-        }
-        
-        if isYear {
-            let year = "\(anchorComponents.year!)"
-            return "\(day) \(dayNum) \(month) \(year)"
-        } else {
-            return "\(day) \(dayNum) \(month)"
-        }
-    }
 }
