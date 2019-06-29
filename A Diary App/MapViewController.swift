@@ -19,6 +19,11 @@ class MapViewController: UIViewController {
     let regionInMeters: Double = 10000
     var previousLocation: CLLocation?
     
+    var entryLocation: CLLocation?
+    
+    //Callback for saving new location
+    var onSave: ((_ location: (locationString: String, location: CLLocation)) -> ())?
+    
     
     //MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -40,9 +45,19 @@ class MapViewController: UIViewController {
     
     
     func centerViewOnUserLocation() {
-        if let location = locationManager.location?.coordinate {
-            let region = MKCoordinateRegion.init(center: location, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+        //Check if location already set
+        if let location = self.entryLocation {
+            let region = MKCoordinateRegion.init(center: location.coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
             mapView.setRegion(region, animated: true)
+            return
+        }
+        
+        //If not center on current location
+        if let location = locationManager.location {
+            let region = MKCoordinateRegion.init(center: location.coordinate, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+            mapView.setRegion(region, animated: true)
+//            self.entryLocation = location
+            return
         }
     }
     
@@ -53,24 +68,28 @@ class MapViewController: UIViewController {
             checkLocationAuthorization()
         } else {
             // Show alert letting the user know they have to turn this on.
+            AlertUser().generalAlert(title: "Location Services Off", message: "Please turn on location services to record a location", vc: self)
         }
     }
     
     
     func checkLocationAuthorization() {
         switch CLLocationManager.authorizationStatus() {
-        case .authorizedWhenInUse:
-            startTackingUserLocation()
-        case .denied:
-            // Show alert instructing them how to turn on permissions
-            break
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            // Show an alert letting them know what's up
-            break
-        case .authorizedAlways:
-            break
+            case .authorizedWhenInUse:
+                startTackingUserLocation()
+            case .denied:
+                // Show alert instructing them how to turn on permissions
+                AlertUser().generalAlert(title: "Error", message: "Please go to settings and make sure you have enabled location services for this app.", vc: self)
+                break
+            case .notDetermined:
+                locationManager.requestWhenInUseAuthorization()
+            case .restricted:
+                // Show an alert letting them know what's up
+                AlertUser().generalAlert(title: "Error", message: "Please go to settings and make sure you have enabled location services for this app.", vc: self)
+                break
+            case .authorizedAlways:
+                break
+            default: break
         }
     }
     
@@ -92,7 +111,9 @@ class MapViewController: UIViewController {
     
     @objc func saveTapped() {
         guard let location = addressLabel.text else { return }
-        NotificationCenter.default.post(name: NSNotifications().locationSaved, object: location)
+        guard let coordinates = self.entryLocation else { return }
+        let object: (locationString: String, location: CLLocation) = (location, coordinates)
+        self.onSave?(object)
         self.navigationController?.popViewController(animated: true)
     }
 }
@@ -110,6 +131,7 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let center = getCenterLocation(for: mapView)
+        self.entryLocation = getCenterLocation(for: mapView)
         let geoCoder = CLGeocoder()
         
         guard let previousLocation = self.previousLocation else { return }

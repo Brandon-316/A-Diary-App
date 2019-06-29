@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 // MARK: UIColor
+//Setting colors from hex value
 extension UIColor {
     convenience init(hex: String, alpha: CGFloat = 1) {
         assert(hex[hex.startIndex] == "#", "Expected hex string of format #RRGGBB")
@@ -28,6 +29,7 @@ extension UIColor {
     }
 }
 
+//Array extensions not in use in final version
 extension Array where Element: Hashable {
     func removingDuplicates() -> [Element] {
         var addedDict = [Element: Bool]()
@@ -42,6 +44,7 @@ extension Array where Element: Hashable {
     }
 }
 
+//Not in use in final version
 extension NSLayoutConstraint {
     func constraintWithMultiplier(_ multiplier: CGFloat) -> NSLayoutConstraint {
         return NSLayoutConstraint(item: self.firstItem as Any, attribute: self.firstAttribute, relatedBy: self.relation, toItem: self.secondItem, attribute: self.secondAttribute, multiplier: multiplier, constant: self.constant)
@@ -133,15 +136,24 @@ extension UIButton {
 }
 
 
+//Extensions for formatting dates
 extension Date {
+    //Date string used in  NavBar in MasterVC
     var navBarDateString: String {
-        return getDateString(withYear: true)
+        return getDateString(withYear: true, day: false)
     }
     
+    //Date string used in cell in MasterVC
     var cellDateString: String {
-        return getDateString(withYear: false)
+        return getDateString(withYear: false, day: true)
     }
     
+    //Date string used in DetailVC
+    var detailDateString: String {
+        return getDateString(withYear: true, day: true)
+    }
+    
+    //Not in use
     var headerViewDateString: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -150,7 +162,7 @@ extension Date {
     }
     
     
-    func getDateString(withYear isYear: Bool) -> String {
+    func getDateString(withYear isYear: Bool, day isDay: Bool) -> String {
         let formatter = DateFormatter()
         let calendar = Calendar.current
         let anchorComponents = calendar.dateComponents([.day, .year], from: self)
@@ -163,21 +175,24 @@ extension Date {
         
         var dayNum  = "\(anchorComponents.day!)"
         switch (dayNum) {
-        case "1" , "21" , "31":
-            dayNum.append("st")
-        case "2" , "22":
-            dayNum.append("nd")
-        case "3" ,"23":
-            dayNum.append("rd")
-        default:
-            dayNum.append("th")
+            case "1" , "21" , "31":
+                dayNum.append("st")
+            case "2" , "22":
+                dayNum.append("nd")
+            case "3" ,"23":
+                dayNum.append("rd")
+            default:
+                dayNum.append("th")
         }
         
-        if isYear {
-            let year = "\(anchorComponents.year!)"
+        let year = "\(anchorComponents.year!)"
+        
+        if isYear && !isDay {
             return "\(month) \(dayNum), \(year)"
+        } else if isYear && isDay {
+            return "\(day) \(month) \(dayNum) \(year)"
         } else {
-            return "\(day) \(dayNum) \(month)"
+            return "\(day) \(month) \(dayNum)"
         }
     }
 }

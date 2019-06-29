@@ -8,26 +8,22 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UITextViewDelegate {
     
-    //MARK: Properties
+    //MARK: - Properties
     var date: Date?
-    var entry: Entry?
     var currentMood: Moods?
-    
     var managedObjectContext: NSManagedObjectContext!
-    
     var detailItem: Entry? {
         didSet {
-            // Update the view.
-            configureView()
+            updateView()
         }
     }
+    var locationPoint: CLLocation?
 
-    //MARK: Outlets
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
-    
+    //MARK: - Outlets
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var entryImage: UIImageView!
     @IBOutlet weak var moodImage: UIImageView!
@@ -36,8 +32,9 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var characterCountLabel: UILabel!
     
-
-
+    
+    
+    //MARK: - Override Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,24 +48,41 @@ class DetailViewController: UIViewController {
         let locationGesture = UITapGestureRecognizer(target: self, action: #selector(locationTapped))
         locationStack.addGestureRecognizer(locationGesture)
         
-        NotificationCenter.default.addObserver(forName: NSNotifications().dateSaved, object: nil, queue: OperationQueue.main) { (notification) in
-            let date = notification.object as! Date
-            self.date = date
-            self.dateLabel.text = date.cellDateString
-        }
+        self.entryText.delegate = self
         
-        NotificationCenter.default.addObserver(forName: NSNotifications().locationSaved, object: nil, queue: OperationQueue.main) { (notification) in
-            let location = notification.object as! String
-            self.locationLabel.text = location
-        }
     }
     
+    //Used to dismiss keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
     
-    //MARK: Methods
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "EntryDateSegue" {
+            let destinationVC = segue.destination as! DatePopUp
+            destinationVC.entryDate = self.date
+            
+            destinationVC.onSave = { (date) in
+                self.date = date
+                self.dateLabel.text = date.detailDateString
+            }
+        }
+        
+        if segue.identifier == "MapSegue" {
+            let destinationVC = segue.destination as! MapViewController
+            destinationVC.entryLocation = self.locationPoint
+            
+            destinationVC.onSave = { (location) in
+                self.locationLabel.text = location.locationString
+                self.locationPoint = location.location
+            }
+        }
+        
+    }
+    
+    
+    //MARK: - Methods
     @objc func dateLabelTapped(sender: UITapGestureRecognizer) {
         self.performSegue(withIdentifier: "EntryDateSegue", sender: nil)
     }
@@ -82,11 +96,50 @@ class DetailViewController: UIViewController {
     func configureView() {
         entryImage.layer.cornerRadius = entryImage.frame.height / 2
         entryImage.clipsToBounds = true
+        
+        
+    }
+    
+    func updateView() {
+        loadViewIfNeeded()
+        if let entry = self.detailItem {
+            if entry.image != nil { self.entryImage.image = entry.image }
+            self.date = entry.entryDate
+            self.dateLabel.text = entry.entryDate.detailDateString
+            self.entryText.text = entry.text
+            self.characterCountLabel.text = String(self.entryText.text.count)
+            
+            if entry.location != nil {
+                self.locationLabel.text = entry.location
+            }
+            if entry.locationPoint != nil {
+                self.locationPoint = entry.locationPoint
+            } else {
+                self.locationPoint = nil
+            }
+            
+            if let moodString = entry.mood {
+                self.setMood(moodString: moodString, from: false)
+            } else {
+                self.moodImage.image = nil
+            }
+        } else {
+            self.date = nil
+            self.entryImage.image = #imageLiteral(resourceName: "NoImageIcon")
+            self.dateLabel.text = "Tap here to set date"
+            self.entryText.text = ""
+            self.characterCountLabel.text = "0"
+            self.locationLabel.text = "Add location"
+            self.locationPoint = nil
+            self.currentMood = nil
+            self.moodImage.image = nil
+        }
+            
     }
     
     
-    func handleSettingMood(with mood: Moods) {
-        if mood == currentMood {
+    func handleSettingMood(with mood: Moods, from buttonPressed: Bool) {
+        if mood == currentMood && buttonPressed {
             self.moodImage.image = nil
             self.currentMood = nil
         } else {
@@ -95,31 +148,103 @@ class DetailViewController: UIViewController {
         }
     }
     
-    //MARK: Actions
-    @IBAction func moodSelected(_ sender: UIButton) {
-        switch sender.accessibilityIdentifier {
-            case "badMood": self.handleSettingMood(with: .bad)
-            case "averageMood": self.handleSettingMood(with: .average)
-            case "goodMood": self.handleSettingMood(with: .good)
+    //Set Moods enum value and moodImage
+    func setMood(moodString: String, from buttonPressed: Bool) {
+        switch moodString {
+            case "Bad": self.handleSettingMood(with: .bad, from: buttonPressed)
+            case "Average": self.handleSettingMood(with: .average, from: buttonPressed)
+            case "Good": self.handleSettingMood(with: .good, from: buttonPressed)
             default: return
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let characterCount = textView.text.count
+        let countString = String(characterCount)
+        self.characterCountLabel.text = countString
+    }
+    
+    func entryTextGreaterThan200() -> Bool {
+        if self.entryText.text.count > 200 { return true }
+        return false
+    }
+    
+    //MARK: - Actions
+    @IBAction func moodSelected(_ sender: UIButton) {
+        if let moodString = sender.accessibilityIdentifier {
+            self.setMood(moodString: moodString, from: true)
         }
     }
     
     @IBAction func save(_ sender: Any) {
         
-        guard let text = entryText.text, let date = date, !text.isEmpty else { print("Text was empty"); return }
-        var image: UIImage?
+        //Check if user has entered required fields
+        guard let text = entryText.text, let date = date, !text.isEmpty else { AlertUser().generalAlert(title: "Fields Missing", message: "Date and text field are required", vc: self); return }
         
-        if entryImage.image != #imageLiteral(resourceName: "NoImageIcon") {
-            image = entryImage.image
+        //Check that text is less than the 200 character allowance
+        if self.entryTextGreaterThan200() {
+            AlertUser().generalAlert(title: "Over Maximum Characters", message: "Your journal entry must not have more than 500 characters", vc: self)
+            return
         }
         
-        let _ = Entry.with(text: entryText.text, date: date, image: image, mood: currentMood, location: locationLabel.text, in: managedObjectContext)
+        var image: UIImage?
+        var imageData: NSData?
+        
+        //Check for selected image
+        if let selectedImage = entryImage.image {
+            if selectedImage != #imageLiteral(resourceName: "NoImageIcon") {
+                image = selectedImage
+                imageData = selectedImage.jpegData(compressionQuality: 1.0)! as NSData
+            } else {
+                image = nil
+                imageData = nil
+            }
+        }
+        
+        var latitude: String?
+        var longitude: String?
+        
+        //Check if location selected and create latitude/longitude points
+        if let locationPoint = self.locationPoint {
+            latitude = String(locationPoint.coordinate.latitude)
+            longitude = String(locationPoint.coordinate.longitude)
+        }
+        
+        //Check if location text is not nil and set regional name of loaction
+        var locationString: String?
+        if locationLabel.text != "Add Location" {
+            locationString = locationLabel.text
+        }
+        
+        //Check if editing entry
+        if self.detailItem != nil {
+            self.detailItem?.date = date as NSDate
+            self.detailItem?.dateString = date.detailDateString
+            self.detailItem?.imageData = imageData
+            self.detailItem?.text = text
+            self.detailItem?.mood = self.currentMood?.moodDescriptor
+            self.detailItem?.location = locationString
+            self.detailItem?.latitude = latitude
+            self.detailItem?.longitude = longitude
+        } else {
+            //If not editing an entry than create a new one
+            let _ = Entry.with(text: entryText.text, date: date, image: image, mood: currentMood, location: locationString, latitude: latitude, longitude: longitude, in: managedObjectContext)
+        }
+        
         managedObjectContext.saveChanges()
         
         navigationController?.navigationController?.popToRootViewController(animated: true)
     }
 
 
+}
+
+//MARK: - EntrySelectionDelegate
+extension DetailViewController: EntrySelectionDelegate {
+    func entrySelected(_ newEntry: Entry?, with context: NSManagedObjectContext) {
+        self.detailItem = newEntry
+        self.managedObjectContext = context
+    }
+    
 }
 

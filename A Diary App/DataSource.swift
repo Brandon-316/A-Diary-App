@@ -13,24 +13,22 @@ import  CoreData
 class DataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     private let tableView: UITableView
     private let context: NSManagedObjectContext
+    private let tableVC: MasterViewController
     
     lazy var fetchedResultsController: DiaryFetchedResultsController = {
-        return DiaryFetchedResultsController(managedObjectContext: self.context, tableView: self.tableView)
+        return DiaryFetchedResultsController(managedObjectContext: self.context, predicate: nil, tableView: self.tableView)
     }()
     
+    weak var delegate: EntrySelectionDelegate?
     
-    var groupedEntries: [[Entry]] = []
-    
-    init(tableView: UITableView, context: NSManagedObjectContext) {
-        self.tableView = tableView
+    //Initialize tableView for MasterViewController
+    init(tableVC: MasterViewController, tableView: UITableView, context: NSManagedObjectContext) {
+        self.tableView = tableVC.tableView
         self.context = context
+        self.tableVC = tableVC
     }
     
-//    func object(at indexPath: IndexPath) -> Entry {
-//        return fetchedResultsController.object(at: indexPath)
-//    }
-    
-    // MARK: - Table view data source
+    // MARK: - Table view datasource/delegate methods
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -46,9 +44,8 @@ class DataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as! HeaderCell
         let dateString = fetchedResultsController.sections?[section].name ?? ""
-        
         cell.configureCell(with: dateString)
-        return cell
+        return cell.contentView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -56,7 +53,7 @@ class DataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 36
+        return 40
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -80,5 +77,51 @@ class DataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
         self.tableView.reloadData()
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedEntry = fetchedResultsController.object(at: indexPath)
+        self.tableVC.delegate?.entrySelected(selectedEntry, with: self.tableVC.managedObjectContext)
+        if let detailViewController = self.tableVC.delegate as? DetailViewController,
+            let detailNavigationController = detailViewController.navigationController {
+            self.tableVC.splitViewController?.showDetailViewController(detailNavigationController, sender: nil)
+        }
+    }
+
+    
+    
+}
+
+
+extension DataSource: UISearchBarDelegate, UISearchDisplayDelegate {
+    
+    // MARK: Search Bar
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        var predicate: NSCompoundPredicate?
+        
+        //Set predicate based on scope button selected
+        if !searchText.isEmpty {
+            switch searchBar.selectedScopeButtonIndex {
+                case 0:
+                    let textPredicate = NSPredicate(format: "dateString CONTAINS[cd] %@", searchText.lowercased())
+                    predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [textPredicate])
+                case 1:
+                    let textPredicate = NSPredicate(format: "text CONTAINS[cd] %@", searchText.lowercased())
+                    predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [textPredicate])
+                case 2:
+                    //Mood search values are 'Bad', 'Average', and 'Good'
+                    let textPredicate = NSPredicate(format: "mood CONTAINS[cd] %@", searchText.lowercased())
+                    predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [textPredicate])
+                default:
+                    break
+            }
+        } else {
+            predicate = nil
+        }
+        
+        //Re fetch entries from Core Data with search predicate
+        self.fetchedResultsController = DiaryFetchedResultsController(managedObjectContext: self.context, predicate: predicate, tableView: self.tableView)
+        
+        tableView.reloadData()
+    }
     
 }

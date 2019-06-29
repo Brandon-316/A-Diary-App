@@ -12,11 +12,10 @@ import CoreData
 class DiaryFetchedResultsController: NSFetchedResultsController<Entry>, NSFetchedResultsControllerDelegate {
     private let tableView: UITableView
     
-    init(managedObjectContext: NSManagedObjectContext, tableView: UITableView) {
+    init(managedObjectContext: NSManagedObjectContext, predicate: NSPredicate?, tableView: UITableView) {
         self.tableView = tableView
-        super.init(fetchRequest: Entry.fetchRequest(), managedObjectContext: managedObjectContext, sectionNameKeyPath: "monthYear", cacheName: nil)
+        super.init(fetchRequest: Entry.fetchRequest(predicate: predicate), managedObjectContext: managedObjectContext, sectionNameKeyPath: "monthYear", cacheName: nil)
         self.delegate = self
-        
         tryFetch()
     }
     
@@ -34,6 +33,19 @@ class DiaryFetchedResultsController: NSFetchedResultsController<Entry>, NSFetche
         tableView.beginUpdates()
     }
     
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        let indexSet = IndexSet(integer: sectionIndex)
+        switch type {
+        case .insert:
+            tableView.insertSections(indexSet, with: .automatic)
+        case .delete:
+            tableView.deleteSections(indexSet, with: .automatic)
+        case .update:
+            tableView.reloadSections(indexSet, with: .automatic)
+        default: return
+        }
+    }
+    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
             case .insert:
@@ -44,11 +56,9 @@ class DiaryFetchedResultsController: NSFetchedResultsController<Entry>, NSFetche
                 
                 if tableView.numberOfRows(inSection: indexPath.section) > 1 {
                     tableView.deleteRows(at: [indexPath], with: .automatic)
-                    print("\nDeleted Row\n")
                 } else {
                     let indexSet = IndexSet(integer: indexPath.section)
                     tableView.deleteSections(indexSet as IndexSet, with: .automatic)
-                    print("\nDeleted Section\n")
             }
             case .update, .move:
                 guard let indexPath = indexPath else { return }
@@ -57,18 +67,7 @@ class DiaryFetchedResultsController: NSFetchedResultsController<Entry>, NSFetche
         }
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        let indexSet = IndexSet(integer: sectionIndex)
-        switch type {
-            case .insert:
-                tableView.insertSections(indexSet, with: .automatic)
-            case .delete:
-                tableView.deleteSections(indexSet, with: .automatic)
-            case .update:
-                tableView.reloadSections(indexSet, with: .automatic)
-            default: return
-        }
-    }
+    
     
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

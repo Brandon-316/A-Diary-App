@@ -14,24 +14,17 @@ class DatePopUp: UIViewController {
     var currentDate = ""
     var entryDate: Date?
     
+    //Call back for saving new date
+    var onSave: ((_ date: Date) -> ())?
+    
+    
     @IBOutlet weak var popUpView: UIView!
     @IBOutlet weak var datePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Set up datePicker
-        if let date = entryDate {
-            datePicker.date = date
-        }
-        
-        if currentDate.isEmpty == false {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss +zzzz"
-            //            let dateString = formatter.string(from: picker.date)
-            let date = formatter.date(from: currentDate)
-            datePicker.date = date!
-        }
+        setUpDatePicker()
         
         popUpView.layer.cornerRadius = 6
         popUpView.layer.masksToBounds = true
@@ -41,11 +34,18 @@ class DatePopUp: UIViewController {
     
     
     //MARK: Methods
+    func setUpDatePicker() {
+        //Set up datePicker
+        if let date = entryDate {
+            datePicker.date = date
+            return
+        }
+    }
     
     //MARK: Actions
     @IBAction func update(_ sender: Any) {
         
-        NotificationCenter.default.post(name: NSNotifications().dateSaved, object: datePicker.date)
+        self.onSave?(datePicker.date)
         
         self.dismiss(animated: true, completion: nil)
     }

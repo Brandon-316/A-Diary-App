@@ -9,33 +9,39 @@
 import UIKit
 import CoreData
 
-class MasterViewController: UITableViewController/*, NSFetchedResultsControllerDelegate*/ {
+//Protocol for sending selected entry to DetailViewController
+protocol EntrySelectionDelegate: class {
+    func entrySelected(_ newEntry: Entry?, with context: NSManagedObjectContext)
+}
 
-    //MARK: Properties
+class MasterViewController: UITableViewController {
+
+    //MARK: - Properties
     var detailViewController: DetailViewController? = nil
-//    var managedObjectContext: NSManagedObjectContext? = nil
     
     let managedObjectContext = CoreDataStack().managedObjectContext
     
     lazy var dataSource: DataSource = {
-        return DataSource(tableView: self.tableView, context: self.managedObjectContext)
+        return DataSource(tableVC: self, tableView: self.tableView, context: self.managedObjectContext)
     }()
+    
+    weak var delegate: EntrySelectionDelegate?
+    
+    
+    //MARK: - Outlets
+    @IBOutlet weak var searchBar: UISearchBar!
+    
 
-
-    //MARK: Override methods
+    
+    //MARK: - Override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let split = splitViewController {
-            let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-        }
-        
         self.tableView.dataSource = dataSource
         self.tableView.delegate = dataSource
+        self.searchBar.delegate = dataSource
         
-        let date = Date()
-        self.title = date.navBarDateString
+        self.setNavBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -43,35 +49,26 @@ class MasterViewController: UITableViewController/*, NSFetchedResultsControllerD
         super.viewWillAppear(animated)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
-//            if let indexPath = tableView.indexPathForSelectedRow {
-            
-//            let object = fetchedResultsController.object(at: indexPath)
-                let navigationController = segue.destination as! UINavigationController
-                let addTaskController = navigationController.topViewController as! DetailViewController
-                
-                addTaskController.managedObjectContext = self.managedObjectContext
-            
-//            }
-            
-            let backItem = UIBarButtonItem()
-            backItem.title = "Back"
-            navigationItem.backBarButtonItem = backItem
-        }
-    }
-
+    
 
     //MARK: Methods
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+    func setNavBar() {
+        let date = Date()
+        self.title = date.navBarDateString
     }
+    
     
     
     //MARK: Actions
+    //Create a new blank entry
     @IBAction func createEntry(_ sender: Any) {
-        self.performSegue(withIdentifier: "showDetail", sender: nil)
+        self.delegate?.entrySelected(nil, with: self.managedObjectContext)
+        if let detailViewController = self.delegate as? DetailViewController,
+            let detailNavigationController = detailViewController.navigationController {
+            self.splitViewController?.showDetailViewController(detailNavigationController, sender: nil)
+        }
     }
+    
     
 }
 

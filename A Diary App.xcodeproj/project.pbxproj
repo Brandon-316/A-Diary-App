@@ -19,15 +19,14 @@
 		840D75BA21DFC913007E7ECF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D75B921DFC913007E7ECF /* Extensions.swift */; };
 		840D75BC21E81825007E7ECF /* EntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D75BB21E81825007E7ECF /* EntryCell.swift */; };
 		8439B8BA220BEE7B007D2064 /* Moods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439B8B9220BEE7B007D2064 /* Moods.swift */; };
-		8439B8BC220D22ED007D2064 /* NSNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439B8BB220D22ED007D2064 /* NSNotifications.swift */; };
 		8439B8BE220E5C54007D2064 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439B8BD220E5C54007D2064 /* MapViewController.swift */; };
 		8456390022000C0E00D538F3 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845638FF22000C0E00D538F3 /* DataSource.swift */; };
 		8456390222000C5400D538F3 /* DiaryFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456390122000C5400D538F3 /* DiaryFetchedResultsController.swift */; };
 		845639032200122000D538F3 /* Entry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C81BBF21FD095E00D2CD31 /* Entry+CoreDataProperties.swift */; };
 		8456390522013DB600D538F3 /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456390422013DB600D538F3 /* HeaderCell.swift */; };
 		84563908220262FA00D538F3 /* DatePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84563907220262FA00D538F3 /* DatePopUp.swift */; };
-		8456390A220278E500D538F3 /* PhotoPickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84563909220278E500D538F3 /* PhotoPickerManager.swift */; };
 		8456390C22027A9400D538F3 /* PopUpImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456390B22027A9400D538F3 /* PopUpImagePicker.swift */; };
+		84B716D722C54098009D8728 /* AlertUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B716D622C54098009D8728 /* AlertUser.swift */; };
 		84C81BBD21FBD4D100D2CD31 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C81BBC21FBD4D100D2CD31 /* CoreDataStack.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,14 +66,13 @@
 		840D75B921DFC913007E7ECF /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		840D75BB21E81825007E7ECF /* EntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCell.swift; sourceTree = "<group>"; };
 		8439B8B9220BEE7B007D2064 /* Moods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Moods.swift; sourceTree = "<group>"; };
-		8439B8BB220D22ED007D2064 /* NSNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNotifications.swift; sourceTree = "<group>"; };
 		8439B8BD220E5C54007D2064 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		845638FF22000C0E00D538F3 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		8456390122000C5400D538F3 /* DiaryFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiaryFetchedResultsController.swift; sourceTree = "<group>"; };
 		8456390422013DB600D538F3 /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
 		84563907220262FA00D538F3 /* DatePopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePopUp.swift; sourceTree = "<group>"; };
-		84563909220278E500D538F3 /* PhotoPickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerManager.swift; sourceTree = "<group>"; };
 		8456390B22027A9400D538F3 /* PopUpImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpImagePicker.swift; sourceTree = "<group>"; };
+		84B716D622C54098009D8728 /* AlertUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertUser.swift; sourceTree = "<group>"; };
 		84C81BBC21FBD4D100D2CD31 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		84C81BBF21FD095E00D2CD31 /* Entry+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entry+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,7 +133,6 @@
 				840D758D21DF1B61007E7ECF /* DetailViewController.swift */,
 				84563907220262FA00D538F3 /* DatePopUp.swift */,
 				8439B8BD220E5C54007D2064 /* MapViewController.swift */,
-				84563909220278E500D538F3 /* PhotoPickerManager.swift */,
 				8456390B22027A9400D538F3 /* PopUpImagePicker.swift */,
 				8456390622013DC000D538F3 /* TableviewCells */,
 				840D758F21DF1B61007E7ECF /* Main.storyboard */,
@@ -146,7 +143,7 @@
 				84C81BBC21FBD4D100D2CD31 /* CoreDataStack.swift */,
 				8456390122000C5400D538F3 /* DiaryFetchedResultsController.swift */,
 				8439B8B9220BEE7B007D2064 /* Moods.swift */,
-				8439B8BB220D22ED007D2064 /* NSNotifications.swift */,
+				84B716D622C54098009D8728 /* AlertUser.swift */,
 			);
 			path = "A Diary App";
 			sourceTree = "<group>";
@@ -323,8 +320,7 @@
 				84563908220262FA00D538F3 /* DatePopUp.swift in Sources */,
 				8456390222000C5400D538F3 /* DiaryFetchedResultsController.swift in Sources */,
 				8456390022000C0E00D538F3 /* DataSource.swift in Sources */,
-				8439B8BC220D22ED007D2064 /* NSNotifications.swift in Sources */,
-				8456390A220278E500D538F3 /* PhotoPickerManager.swift in Sources */,
+				84B716D722C54098009D8728 /* AlertUser.swift in Sources */,
 				8439B8BA220BEE7B007D2064 /* Moods.swift in Sources */,
 				8456390522013DB600D538F3 /* HeaderCell.swift in Sources */,
 				840D758E21DF1B61007E7ECF /* DetailViewController.swift in Sources */,
