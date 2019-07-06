@@ -36,13 +36,13 @@ class DiaryFetchedResultsController: NSFetchedResultsController<Entry>, NSFetche
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         let indexSet = IndexSet(integer: sectionIndex)
         switch type {
-        case .insert:
-            tableView.insertSections(indexSet, with: .automatic)
-        case .delete:
-            tableView.deleteSections(indexSet, with: .automatic)
-        case .update:
-            tableView.reloadSections(indexSet, with: .automatic)
-        default: return
+            case .insert:
+                tableView.insertSections(indexSet, with: .automatic)
+            case .delete:
+                tableView.deleteSections(indexSet, with: .automatic)
+            case .update:
+                tableView.reloadSections(indexSet, with: .automatic)
+            default: return
         }
     }
     
@@ -59,7 +59,7 @@ class DiaryFetchedResultsController: NSFetchedResultsController<Entry>, NSFetche
                 } else {
                     let indexSet = IndexSet(integer: indexPath.section)
                     tableView.deleteSections(indexSet as IndexSet, with: .automatic)
-            }
+                }
             case .update, .move:
                 guard let indexPath = indexPath else { return }
                 tableView.reloadRows(at: [indexPath], with: .automatic)

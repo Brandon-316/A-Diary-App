@@ -9,6 +9,22 @@
 import Foundation
 import UIKit
 
+
+//MARK: UIViewController
+extension UIViewController {
+    func generalAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.view.tintColor = UIColor.black
+        
+        let ok = UIAlertAction(title: "OK", style: .default)
+        
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
+    }
+}
+
+
+
 // MARK: UIColor
 //Setting colors from hex value
 extension UIColor {

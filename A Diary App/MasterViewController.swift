@@ -17,7 +17,6 @@ protocol EntrySelectionDelegate: class {
 class MasterViewController: UITableViewController {
 
     //MARK: - Properties
-    var detailViewController: DetailViewController? = nil
     
     let managedObjectContext = CoreDataStack().managedObjectContext
     

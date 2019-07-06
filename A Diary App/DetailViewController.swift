@@ -179,11 +179,11 @@ class DetailViewController: UIViewController, UITextViewDelegate {
     @IBAction func save(_ sender: Any) {
         
         //Check if user has entered required fields
-        guard let text = entryText.text, let date = date, !text.isEmpty else { AlertUser().generalAlert(title: "Fields Missing", message: "Date and text field are required", vc: self); return }
+        guard let text = entryText.text, let date = date, !text.isEmpty else { self.generalAlert(title: "Fields Missing", message: "Date and text field are required"); return }
         
         //Check that text is less than the 200 character allowance
         if self.entryTextGreaterThan200() {
-            AlertUser().generalAlert(title: "Over Maximum Characters", message: "Your journal entry must not have more than 500 characters", vc: self)
+            self.generalAlert(title: "Over Maximum Characters", message: "Your journal entry must not have more than 500 characters")
             return
         }
         

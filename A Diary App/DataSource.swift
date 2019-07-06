@@ -19,8 +19,6 @@ class DataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
         return DiaryFetchedResultsController(managedObjectContext: self.context, predicate: nil, tableView: self.tableView)
     }()
     
-    weak var delegate: EntrySelectionDelegate?
-    
     //Initialize tableView for MasterViewController
     init(tableVC: MasterViewController, tableView: UITableView, context: NSManagedObjectContext) {
         self.tableView = tableVC.tableView

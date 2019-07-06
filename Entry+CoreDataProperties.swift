@@ -96,6 +96,7 @@ extension Entry {
         formatter.dateFormat = "MMMM yyyy"
         return formatter.string(from: self.date as Date)
     }
+    
 }
 
 extension Entry {

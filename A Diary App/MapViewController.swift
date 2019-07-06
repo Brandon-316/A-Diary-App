@@ -68,7 +68,7 @@ class MapViewController: UIViewController {
             checkLocationAuthorization()
         } else {
             // Show alert letting the user know they have to turn this on.
-            AlertUser().generalAlert(title: "Location Services Off", message: "Please turn on location services to record a location", vc: self)
+            self.generalAlert(title: "Location Services Off", message: "Please turn on location services to record a location")
         }
     }
     
@@ -79,13 +79,13 @@ class MapViewController: UIViewController {
                 startTackingUserLocation()
             case .denied:
                 // Show alert instructing them how to turn on permissions
-                AlertUser().generalAlert(title: "Error", message: "Please go to settings and make sure you have enabled location services for this app.", vc: self)
+                self.generalAlert(title: "Error", message: "Please go to settings and make sure you have enabled location services for this app.")
                 break
             case .notDetermined:
                 locationManager.requestWhenInUseAuthorization()
             case .restricted:
                 // Show an alert letting them know what's up
-                AlertUser().generalAlert(title: "Error", message: "Please go to settings and make sure you have enabled location services for this app.", vc: self)
+                self.generalAlert(title: "Error", message: "Please go to settings and make sure you have enabled location services for this app.")
                 break
             case .authorizedAlways:
                 break
